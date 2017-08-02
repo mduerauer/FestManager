@@ -143,7 +143,7 @@ namespace FestManager_Core.Forms.SubForms
             kbTableAdapter.FillByBestellung(kbTable, _actualBestellungId);
             if (kbTable.Rows.Count > 0)
             {
-                var kb = new Kassenbon(e.Graphics, kbTable);
+                var kb = new Kassenbon(Settings, e.Graphics, kbTable);
                 // Important for Kassa-Prints:
                 kb.Draw(true);
             }

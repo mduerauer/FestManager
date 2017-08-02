@@ -14,6 +14,8 @@ namespace FestManager_Bestellung
 {
     internal static class Program
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         /// <summary>
         /// Der Haupteinstiegspunkt für die Anwendung.
         /// </summary>
@@ -75,7 +77,16 @@ namespace FestManager_Bestellung
                 return;
             }
 
-            Application.Run(new FormMain("Bestellung", nodes, settings));
+            try
+            {
+                Application.Run(new FormMain("Bestellung", nodes, settings));
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+                MessageBox.Show("Fehler in der Anwendung aufgetreten: " + ex.Message, "Kritischer Fehler!", MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
         }
         
         private static FestManagerSettings LoadAppConfigSettings()

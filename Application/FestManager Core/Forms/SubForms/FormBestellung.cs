@@ -57,6 +57,7 @@ namespace FestManager_Core.Forms.SubForms
             }
             catch (Exception ex)
             {
+                Logger.Error(ex);
                 MessageBox.Show(Resources.Database_Error_Message_Pfx + ex.Message,
                     Resources.Database_Error_Message_Title, MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
@@ -87,6 +88,7 @@ namespace FestManager_Core.Forms.SubForms
                 zeitpunktTextBox.Text = DateTime.Now.ToString(CultureInfo.InvariantCulture);
                 tischTextBox.Text = "";
                 rueckgaengigButton.Visible = false;
+                removeButton.Visible = false;
                 bestellungIdTextBox.Text = _bestellungRow.BestellungId.ToString();
 
                 bestellungArtikelTableAdapter.FillByBestellungId(festManagerDataSet.BestellungArtikel,
@@ -238,6 +240,7 @@ namespace FestManager_Core.Forms.SubForms
                 return;
             }
 
+            
             try
             {
                 PrintBestellung();
@@ -251,7 +254,9 @@ namespace FestManager_Core.Forms.SubForms
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
+            
 
+            
             MessageBox.Show(
                 Resources.FormBestellung_abschliessenButton_Click_Order_placed + $"{_gesamtpreis:C}", 
                 Resources.FormBestellung_abschliessenButton_Click_Order_placed_Title, 
@@ -273,6 +278,7 @@ namespace FestManager_Core.Forms.SubForms
             {
                 Copies = 1
             };
+            printDocument.PrintController = new StandardPrintController();
 
             if (_bestellungRow.BestellungId == 0)
             {
@@ -366,7 +372,7 @@ namespace FestManager_Core.Forms.SubForms
                     if (print)
                     {
                         printDocument.PrinterSettings.PrinterName = row.Drucker;
-
+                        
                         var result = DialogResult.Retry;
                         while (result == DialogResult.Retry)
                         {
@@ -426,7 +432,7 @@ namespace FestManager_Core.Forms.SubForms
                 }
                 if (kbTable.Rows.Count > 0)
                 {
-                    var kb = new Kassenbon(e.Graphics, kbTable);
+                    var kb = new Kassenbon(Settings, e.Graphics, kbTable);
                     // Important for Kassa-Prints:
                     kb.Draw(_printAll);
                 }
@@ -434,6 +440,7 @@ namespace FestManager_Core.Forms.SubForms
             }
             catch (Exception ex)
             {
+                Logger.Error(ex);
                 MessageBox.Show(Resources.Database_Error_Message_Pfx + ex.Message,
                     Resources.Database_Error_Message_Title, MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
@@ -447,7 +454,10 @@ namespace FestManager_Core.Forms.SubForms
 
             try
             {
-                artikelDataGridView.Rows[e.RowIndex].Cells[0].Value = _bestellungRow.BestellungId;
+                if (artikelDataGridView.Rows.Count > e.RowIndex)
+                {
+                    artikelDataGridView.Rows[e.RowIndex].Cells[0].Value = _bestellungRow.BestellungId;
+                }
             }
             catch (Exception ex)
             {
@@ -545,66 +555,6 @@ namespace FestManager_Core.Forms.SubForms
             artikelDataGridView.Rows[artikelDataGridView.Rows.Count-1].Cells[1].Selected = true;
         }
 
-        private void artikelDataGridView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
-        {
-            Logger.Debug("artikelDataGridView_CellEndEdit()");
-
-            /*
-            int shortcutValue;
-            int? artikelId = null;
-            decimal? preis = 0;
-
-            var shortcut = artikelDataGridView.Rows[e.RowIndex].Cells[ColIdxKuerzel].Value.ToString();
-
-            try
-            {
-                shortcutValue = int.Parse(shortcut);
-            }
-            catch (Exception)
-            {
-                MessageBox.Show(Resources.Invalid_shortcut);
-                artikelDataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex].Selected = true;
-                return;
-            }
-
-
-            if (shortcutValue > 0)
-            {
-                artikelId = artikelTableAdapter.GetGueltigArtikelIdByShortCut(shortcutValue);
-                preis = artikelTableAdapter.GetEinzelpreisByShortCut(shortcutValue);
-            }
-
-            if (artikelId != null)
-            {
-                artikelDataGridView.Rows[e.RowIndex].Cells[ColIdxArtikel].Value = artikelId;
-
-                artikelDataGridView.Rows[e.RowIndex].Cells[ColIdxPreis].Value = preis * int.Parse(artikelDataGridView.Rows[e.RowIndex].Cells[ColIdxMenge].Value.ToString());
-                rueckgaengigButton.Visible = true;
-
-                CalculateGesamtpreis();
-                gesamtpreisTextBox.Text = _bestellungRow.Gesamtpreis.ToString(CultureInfo.InvariantCulture);
-            }
-            else
-            {
-                //artikelDataGridView.Rows[e.RowIndex].Cells[ColIdxKuerzel].Value = DBNull.Value;
-                MessageBox.Show(Resources.FormBestellung_artikelDataGridView_CellValidated_Product_not_found, Resources.FormBestellung_artikelDataGridView_CellValidated_Product_not_found_Title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-                
-                artikelDataGridView.Rows[e.RowIndex].Cells[ColIdxMenge].Value = DBNull.Value;
-                artikelDataGridView.Rows[e.RowIndex].Cells[ColIdxArtikel].Value = DBNull.Value;
-                artikelDataGridView.Rows[e.RowIndex].Cells[ColIdxPreis].Value = DBNull.Value;
-
-                bestellungArtikelBindingSource.CancelEdit();
-                artikelDataGridView.RefreshEdit();
-
-                SendKeys.Send("{LEFT}");
-                SendKeys.Send("{LEFT}");
-                SendKeys.Send("{LEFT}");
-                
-            }
-            */
-        }
-
         private void artikelDataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
             Logger.Debug("artikelDataGridView_DataError()");
@@ -667,6 +617,7 @@ namespace FestManager_Core.Forms.SubForms
                     if (!e.Cancel)
                     {
                         rueckgaengigButton.Visible = true;
+                        removeButton.Visible = true;
                     }
                 }
 
@@ -719,11 +670,6 @@ namespace FestManager_Core.Forms.SubForms
             return menge;
         }
 
-        private void artikelDataGridView_CellValidated(object sender, DataGridViewCellEventArgs e)
-        {
-            Logger.Debug("artikelDataGridView_CellValidated()");
-        }
-
         private void UpdateRow(int row, int menge, int artikel, decimal preis)
         {
             Logger.Debug("UpdateRow()");
@@ -739,7 +685,15 @@ namespace FestManager_Core.Forms.SubForms
 
             try
             {
-                value = artikelDataGridView.Rows[rowIndex].Cells[colIndex].Value;
+                if (artikelDataGridView.Rows.Count > rowIndex)
+                {
+                    value = artikelDataGridView.Rows[rowIndex].Cells[colIndex].Value;
+                }
+                else
+                {
+                    value = null;
+                    return false;
+                }
             }
             catch
             {
@@ -754,7 +708,19 @@ namespace FestManager_Core.Forms.SubForms
         {
             Logger.Debug("SetCellValue()");
 
-            artikelDataGridView.Rows[rowIndex].Cells[colIndex].Value = value;
+            try
+            {
+                if (artikelDataGridView.Rows.Count > rowIndex)
+                {
+                    artikelDataGridView.Rows[rowIndex].Cells[colIndex].Value = value;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(Resources.FormBestellung_SetCellValue_Error_Pfx + ex.Message, Resources.Unknown_Error,
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Logger.Error(ex);
+            }
         }
 
         private void ShowError(string error)
@@ -770,7 +736,6 @@ namespace FestManager_Core.Forms.SubForms
         private void HideError()
         {
             Logger.Debug("HideError()");
-
             UpdateGesamtpreisLabel(_gesamtpreis);
         }
 
@@ -778,10 +743,11 @@ namespace FestManager_Core.Forms.SubForms
         {
             Logger.Debug("artikelDataGridView_RowValidating()");
 
+            
+
             try
             {
-                var row = artikelDataGridView.Rows.SharedRow(e.RowIndex);
-
+                var row = artikelDataGridView.Rows[e.RowIndex];
                 if (row.IsNewRow) return;
 
                 object value;
@@ -795,8 +761,6 @@ namespace FestManager_Core.Forms.SubForms
                 {
                     e.Cancel = true;
                     ShowError("Sie haben keinen Artikel erfasst!");
-
-
                 }
 
                 if (!e.Cancel)
@@ -809,6 +773,7 @@ namespace FestManager_Core.Forms.SubForms
                 MessageBox.Show(Resources.FormBestellung_artikelDataGridView_CellValidating_Error_Pfx + ex.Message, Resources.Unknown_Error,
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 e.Cancel = true;
+                Logger.Error(ex);
             }
         }
 
@@ -816,19 +781,26 @@ namespace FestManager_Core.Forms.SubForms
         {
             Logger.Trace("artikelDataGridView_CellFormatting()");
 
-            if (artikelDataGridView.CurrentCell != null)
+            try
             {
-                if (e.RowIndex == artikelDataGridView.CurrentCell.RowIndex &&
-                    e.ColumnIndex == artikelDataGridView.CurrentCell.ColumnIndex)
+                if (artikelDataGridView.CurrentCell != null)
                 {
-                    e.CellStyle.SelectionBackColor = Color.Green;
-                    e.CellStyle.SelectionForeColor = Color.White;
+                    if (e.RowIndex == artikelDataGridView.CurrentCell.RowIndex &&
+                        e.ColumnIndex == artikelDataGridView.CurrentCell.ColumnIndex)
+                    {
+                        e.CellStyle.SelectionBackColor = Color.Green;
+                        e.CellStyle.SelectionForeColor = Color.White;
+                    }
+                    else
+                    {
+                        e.CellStyle.SelectionBackColor = artikelDataGridView.DefaultCellStyle.SelectionBackColor;
+                        e.CellStyle.SelectionForeColor = artikelDataGridView.DefaultCellStyle.SelectionForeColor;
+                    }
                 }
-                else
-                {
-                    e.CellStyle.SelectionBackColor = artikelDataGridView.DefaultCellStyle.SelectionBackColor;
-                    e.CellStyle.SelectionForeColor = artikelDataGridView.DefaultCellStyle.SelectionForeColor;
-                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
             }
         }
 
@@ -887,10 +859,19 @@ namespace FestManager_Core.Forms.SubForms
 
         private void artikelDataGridView_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
         {
-            Logger.Debug("artikelDataGridView_RowsRemoved()");
+            try
+            {
+                Logger.Debug("artikelDataGridView_RowsRemoved()");
 
-            _gesamtpreis = CalculateGesamtpreis();
-            UpdateGesamtpreisLabel(_gesamtpreis);
+                artikelDataGridView.Update();
+
+                _gesamtpreis = CalculateGesamtpreis();
+                UpdateGesamtpreisLabel(_gesamtpreis);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex);
+            }
         }
 
         private void tischTextBox_Validating(object sender, System.ComponentModel.CancelEventArgs e)
@@ -905,6 +886,25 @@ namespace FestManager_Core.Forms.SubForms
             {
                 HideError();
             }
+        }
+
+        private void artikelDataGridView_CancelRowEdit(object sender, QuestionEventArgs e)
+        {
+            e.Response = true;
+        }
+
+        private void RemoveSelectedRows()
+        {
+            foreach (DataGridViewRow row in this.artikelDataGridView.SelectedRows)
+            {
+                if(!row.IsNewRow)
+                    this.artikelDataGridView.Rows.Remove(row);
+            }
+        }
+
+        private void removeButton_Click(object sender, EventArgs e)
+        {
+            RemoveSelectedRows();
         }
     }
 }

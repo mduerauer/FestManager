@@ -133,7 +133,7 @@ namespace FestManager_Core.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Fehler beim Speichern der Bestellung! ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Fehler beim Speichern der Bestellung!  ähnelt.
         /// </summary>
         internal static string FormBestellung_abschliessenButton_Click_Error_saving_order {
             get {
@@ -255,6 +255,15 @@ namespace FestManager_Core.Properties {
         internal static string FormBestellung_PrintKassabon_Printing_error {
             get {
                 return ResourceManager.GetString("FormBestellung_PrintKassabon_Printing_error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Unbekannter Fehler beim setzen des Zellen-Werts:  ähnelt.
+        /// </summary>
+        internal static string FormBestellung_SetCellValue_Error_Pfx {
+            get {
+                return ResourceManager.GetString("FormBestellung_SetCellValue_Error_Pfx", resourceCulture);
             }
         }
         

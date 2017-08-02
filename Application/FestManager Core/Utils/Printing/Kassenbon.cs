@@ -44,15 +44,19 @@ namespace FestManager_Core.Utils.Printing
             
         }
 
-        public Kassenbon(Graphics g, FestManagerDataSet.KassenbonDataTable t, string titleString)
+        public Kassenbon(FestManagerSettings settings, Graphics g, FestManagerDataSet.KassenbonDataTable t, string titleString)
         {
+            Settings = settings;
             Graphic = g;
             _table = t;
             _title = titleString;
 
             Init();
         }
-        public Kassenbon(Graphics g, FestManagerDataSet.KassenbonDataTable t) {
+
+        public Kassenbon(FestManagerSettings settings, Graphics g, FestManagerDataSet.KassenbonDataTable t)
+        {
+            Settings = settings;
             Graphic = g;
             _table = t;
             _title = Settings.Organisation + " - Fest " + DateTime.Now.ToString("yyyy");

@@ -33,6 +33,7 @@ namespace FestManager_Core.Forms.SubForms
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.toolStripContainer = new System.Windows.Forms.ToolStripContainer();
             this.actionsPanel = new System.Windows.Forms.Panel();
+            this.removeButton = new System.Windows.Forms.Button();
             this.rueckgaengigButton = new System.Windows.Forms.Button();
             this.printLastOrderButton = new System.Windows.Forms.Button();
             this.stornierenButton = new System.Windows.Forms.Button();
@@ -98,6 +99,7 @@ namespace FestManager_Core.Forms.SubForms
             // 
             // actionsPanel
             // 
+            this.actionsPanel.Controls.Add(this.removeButton);
             this.actionsPanel.Controls.Add(this.rueckgaengigButton);
             this.actionsPanel.Controls.Add(this.printLastOrderButton);
             this.actionsPanel.Controls.Add(this.stornierenButton);
@@ -108,9 +110,24 @@ namespace FestManager_Core.Forms.SubForms
             this.actionsPanel.Size = new System.Drawing.Size(924, 42);
             this.actionsPanel.TabIndex = 1;
             // 
+            // removeButton
+            // 
+            this.removeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.removeButton.Image = ((System.Drawing.Image)(resources.GetObject("removeButton.Image")));
+            this.removeButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.removeButton.Location = new System.Drawing.Point(544, 0);
+            this.removeButton.Name = "removeButton";
+            this.removeButton.Size = new System.Drawing.Size(89, 23);
+            this.removeButton.TabIndex = 9;
+            this.removeButton.Text = "Zeile &löschen";
+            this.removeButton.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.removeButton.UseVisualStyleBackColor = true;
+            this.removeButton.Click += new System.EventHandler(this.removeButton_Click);
+            // 
             // rueckgaengigButton
             // 
             this.rueckgaengigButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.rueckgaengigButton.Enabled = false;
             this.rueckgaengigButton.Image = ((System.Drawing.Image)(resources.GetObject("rueckgaengigButton.Image")));
             this.rueckgaengigButton.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
             this.rueckgaengigButton.Location = new System.Drawing.Point(639, 0);
@@ -220,6 +237,7 @@ namespace FestManager_Core.Forms.SubForms
             // 
             // artikelDataGridView
             // 
+            this.artikelDataGridView.AllowUserToResizeRows = false;
             this.artikelDataGridView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -240,6 +258,7 @@ namespace FestManager_Core.Forms.SubForms
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.artikelDataGridView.DefaultCellStyle = dataGridViewCellStyle1;
+            this.artikelDataGridView.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.artikelDataGridView.Location = new System.Drawing.Point(15, 106);
             this.artikelDataGridView.Name = "artikelDataGridView";
             this.artikelDataGridView.RowTemplate.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
@@ -247,9 +266,8 @@ namespace FestManager_Core.Forms.SubForms
             this.artikelDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.artikelDataGridView.Size = new System.Drawing.Size(897, 320);
             this.artikelDataGridView.TabIndex = 2;
-            this.artikelDataGridView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.artikelDataGridView_CellEndEdit);
+            this.artikelDataGridView.CancelRowEdit += new System.Windows.Forms.QuestionEventHandler(this.artikelDataGridView_CancelRowEdit);
             this.artikelDataGridView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.artikelDataGridView_CellFormatting);
-            this.artikelDataGridView.CellValidated += new System.Windows.Forms.DataGridViewCellEventHandler(this.artikelDataGridView_CellValidated);
             this.artikelDataGridView.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.artikelDataGridView_CellValidating);
             this.artikelDataGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.artikelDataGridView_DataError);
             this.artikelDataGridView.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.artikelDataGridView_RowEnter);
@@ -479,9 +497,10 @@ namespace FestManager_Core.Forms.SubForms
         private System.Windows.Forms.TextBox tischTextBox;
         private System.Windows.Forms.Button rueckgaengigButton;
         private System.Windows.Forms.Label labelError;
+        private System.Windows.Forms.DataGridViewTextBoxColumn shortcutDataGridViewTextBoxColumn;
+        private System.Windows.Forms.Button removeButton;
         private System.Windows.Forms.DataGridViewTextBoxColumn bestellungIdDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn mengeDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn shortcutDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewComboBoxColumn artikelIdDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn gesamtpreisDataGridViewTextBoxColumn;
     }

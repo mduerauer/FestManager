@@ -118,6 +118,17 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="removeButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        R0lGODlhEAAQAIUjAN8AKdYFK9cGLNgHLtkIL9sKMMcSM98ONeAPNuEQNswXOc0YOqYoP9IcPeAdQeIf
+        Q8MpRsQrR90oSl5QU2pOU+EsTcM3UcM4Ul9fX7ZGWtY9WWRkZGVlZedAX7JQYoxiam5ubupfeetgev//
+        ////////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////yH+EUNyZWF0ZWQgd2l0aCBHSU1QACH/C05FVFNDQVBFMi4w
+        AwEBAAAh+QQBCgA/ACwAAAAAEAAQAAAIbgB/CBxIsKDABBUMKvzhAACEhQYVAMhgsAOAiBMJdjjwQeGC
+        jD8eSOi4cMGADAg0kIRIAECElQtDABAQAKZBEQAsTDAggKJCnBc2CDTpk6DMBhgIEjUKoAAFDgUhgPwh
+        kwFUgx4GEAQBAqJXiAEBADs=
+</value>
+  </data>
   <data name="rueckgaengigButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAgRJREFUOE+d
@@ -383,6 +394,6 @@
     <value>366, 17</value>
   </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>217</value>
+    <value>43</value>
   </metadata>
 </root>

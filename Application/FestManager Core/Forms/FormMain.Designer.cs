@@ -39,8 +39,8 @@ namespace FestManager_Core.Forms
             this.LeftToolStripPanel = new System.Windows.Forms.ToolStripPanel();
             this.ContentPanel = new System.Windows.Forms.ToolStripContentPanel();
             this.ToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.festManagerDataSet = new FestManager_Core.Data.FestManagerDataSet();
             this.treeViewMain = new System.Windows.Forms.TreeView();
+            this.festManagerDataSet = new FestManager_Core.Data.FestManagerDataSet();
             this.statusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.festManagerDataSet)).BeginInit();
             this.SuspendLayout();
@@ -119,11 +119,6 @@ namespace FestManager_Core.Forms
             // 
             this.ContentPanel.Size = new System.Drawing.Size(462, 382);
             // 
-            // festManagerDataSet
-            // 
-            this.festManagerDataSet.DataSetName = "FestManagerDataSet";
-            this.festManagerDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
-            // 
             // treeViewMain
             // 
             this.treeViewMain.Dock = System.Windows.Forms.DockStyle.Left;
@@ -136,6 +131,11 @@ namespace FestManager_Core.Forms
             this.treeViewMain.TabIndex = 4;
             this.treeViewMain.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewMain_AfterSelect);
             this.treeViewMain.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.treeViewMain_NodeMouseClick);
+            // 
+            // festManagerDataSet
+            // 
+            this.festManagerDataSet.DataSetName = "FestManagerDataSet";
+            this.festManagerDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // FormMain
             // 

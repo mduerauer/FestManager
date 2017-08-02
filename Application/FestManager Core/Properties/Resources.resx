@@ -201,6 +201,9 @@
   <data name="FormBestellung_artikelDataGridView_CellValidating_Error_Pfx" xml:space="preserve">
     <value>Unbekannter Fehler beim Validieren der Daten: </value>
   </data>
+  <data name="FormBestellung_SetCellValue_Error_Pfx" xml:space="preserve">
+    <value>Unbekannter Fehler beim setzen des Zellen-Werts: </value>
+  </data>
   <data name="Unknown_Error" xml:space="preserve">
     <value>Unbekannter Fehler</value>
   </data>
